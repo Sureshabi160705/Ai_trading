@@ -1,3 +1,8 @@
+// ==================== API CONFIGURATION ====================
+const API_BASE_URL = 'https://ai-tradingbackend.onrender.com';
+// For local development, uncomment the line below:
+// const API_BASE_URL = 'http://localhost:5000';
+
 // ==================== DARK MODE ====================
 function initDarkMode() {
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -61,7 +66,7 @@ async function loadIndexData(index) {
     console.log(`Loading data for ${index}...`);
 
     try {
-        const response = await fetch(`/api/index/${index}`);
+        const response = await fetch(`${API_BASE_URL}/api/index/${index}`);
         const data = await response.json();
         console.log('API response:', data);
 
@@ -98,7 +103,7 @@ async function loadIndexData(index) {
 // Load live prices
 async function loadLivePrices() {
     try {
-        const response = await fetch('/api/live_prices');
+        const response = await fetch(`${API_BASE_URL}/api/live_prices`);
         const prices = await response.json();
         console.log('Live prices fetched', prices);
 
@@ -125,7 +130,7 @@ function showMarketClosed() {
 // Train AI model
 async function trainModel() {
     try {
-        const response = await fetch(`/api/train/${currentIndex}`);
+        const response = await fetch(`${API_BASE_URL}/api/train/${currentIndex}`);
         const result = await response.json();
 
         if (result.message) {
@@ -198,7 +203,7 @@ function loadTradingViewChart(index) {
 // Load best options from backend
 async function loadBestOptions(index) {
     try {
-        const response = await fetch(`/api/best_options/${index}`);
+        const response = await fetch(`${API_BASE_URL}/api/best_options/${index}`);
         const data = await response.json();
         const tbody = document.getElementById('bestOptionsTableBody');
         tbody.innerHTML = '';
@@ -317,7 +322,7 @@ async function analyzeChartImage() {
         const formData = new FormData();
         formData.append('image', pastedImageFile);
         
-        const response = await fetch('/api/analyze_chart', {
+        const response = await fetch(`${API_BASE_URL}/api/analyze_chart`, {
             method: 'POST',
             body: formData
         });
@@ -354,7 +359,7 @@ let currentSelectedIndex = null;
 
 async function loadAutoPredictions() {
     try {
-        const response = await fetch('/api/auto-predictions');
+        const response = await fetch(`${API_BASE_URL}/api/auto-predictions`);
         const data = await response.json();
         
         if (data.status !== 'success' || !data.predictions) {
@@ -420,7 +425,7 @@ async function diveIntoIndex(indexName) {
 
 async function loadIndexChartData(indexName) {
     try {
-        const response = await fetch(`/api/index/${indexName}`);
+        const response = await fetch(`${API_BASE_URL}/api/index/${indexName}`);
         const data = await response.json();
         
         if (data.error) {
@@ -469,7 +474,7 @@ function createCandleChart(candles, indexName) {
 
 async function loadBestOptionsForIndex(indexName) {
     try {
-        const response = await fetch(`/api/auto-predictions`);
+        const response = await fetch(`${API_BASE_URL}/api/auto-predictions`);
         const data = await response.json();
         
         if (data.status !== 'success') {
