@@ -229,7 +229,7 @@ function updateIndexSection(indexName, dataObj, sectionIdPrefix, callsId, putsId
 async function fetchMarketData() {
     try {
         console.log(`[${new Date().toLocaleTimeString()}] Fetching market data from backend...`);
-        const response = await fetch('http://127.0.0.1:5000/api/market-data');
+        const response = await fetch('https://ai-tradingbackend.onrender.com/api/market-data');
         const data = await response.json();
         console.log(`[${new Date().toLocaleTimeString()}] ✅ Data fetched successfully! NIFTY: ${data.nifty.spot}, SENSEX: ${data.sensex.spot}`);
         
@@ -347,7 +347,7 @@ analyzeActionBtn.addEventListener('click', async () => {
     formData.append('image', currentFile);
     
     try {
-        const res = await fetch('http://127.0.0.1:5000/api/analyze-chart', {
+        const res = await fetch('https://ai-tradingbackend.onrender.com/api/analyze-chart', {
             method: 'POST',
             body: formData
         });
