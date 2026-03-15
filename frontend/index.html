@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeSense | Advanced Option Predictions</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="blob-bg blob-1"></div>
+    <div class="blob-bg blob-2"></div>
+
+    <!-- Theme Toggle & Header -->
+    <nav class="navbar glass-panel">
+        <div class="logo">
+            <i data-lucide="trending-up" class="logo-icon"></i>
+            <h1>TradeSense</h1>
+        </div>
+        
+        <button id="chart-analyzer-btn" class="analyzer-btn tooltip-trigger" title="AI Chart Analyzer">
+            <i data-lucide="scan-line" class="ai-icon"></i>
+            <span>Chart Analyzer</span>
+        </button>
+        
+        <!-- TOP Live Prices Added per Request -->
+        <div class="top-live-ticker">
+            <div class="ticker-item">
+                <span class="ticker-label">NIFTY:</span>
+                <span id="top-nifty" class="ticker-val">Loading...</span>
+            </div>
+            <div class="ticker-item">
+                <span class="ticker-label">SENSEX:</span>
+                <span id="top-sensex" class="ticker-val">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="nav-controls">
+            <div id="market-status-box" class="market-status">
+                <span class="status-dot pulsing"></span>
+                <span id="market-status-text">Fetching...</span>
+            </div>
+            <button id="theme-toggle" class="btn-icon" aria-label="Toggle Theme">
+                <i data-lucide="sun" class="light-icon"></i>
+                <i data-lucide="moon" class="dark-icon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="dashboard container">
+        
+        <!-- Nifty 50 Dash -->
+        <section class="index-section" id="nifty-section">
+            <div class="index-header glass-panel">
+                <div class="index-info">
+                    <h2>NIFTY 50</h2>
+                    <div class="price-container">
+                        <span class="currency">₹</span>
+                        <span id="nifty-spot" class="price run-up">---</span>
+                    </div>
+                </div>
+                <div class="prediction-badge trend-up" id="nifty-trend-badge">
+                    <i data-lucide="loader"></i>
+                    <span>ANALYZING...</span>
+                </div>
+            </div>
+
+            <!-- Spot Chart -->
+            <div class="chart-container glass-panel">
+                <canvas id="niftySpotChart"></canvas>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="options-grid">
+                <!-- Calls -->
+                <div class="options-column calls-column">
+                    <h3 class="column-title calls-title">Best Call Options (CE)</h3>
+                    <div id="nifty-calls-container" class="cards-list">
+                        <!-- Cards injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Puts -->
+                <div class="options-column puts-column">
+                    <h3 class="column-title puts-title">Best Put Options (PE)</h3>
+                    <div id="nifty-puts-container" class="cards-list">
+                        <!-- Cards injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sensex Dash -->
+        <section class="index-section" id="sensex-section">
+            <div class="index-header glass-panel">
+                <div class="index-info">
+                    <h2>SENSEX</h2>
+                    <div class="price-container">
+                        <span class="currency">₹</span>
+                        <span id="sensex-spot" class="price run-down">---</span>
+                    </div>
+                </div>
+                <div class="prediction-badge trend-down" id="sensex-trend-badge">
+                    <i data-lucide="loader"></i>
+                    <span>ANALYZING...</span>
+                </div>
+            </div>
+
+            <!-- Spot Chart -->
+            <div class="chart-container glass-panel">
+                <canvas id="sensexSpotChart"></canvas>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="options-grid">
+                <!-- Calls -->
+                <div class="options-column calls-column">
+                    <h3 class="column-title calls-title">Best Call Options (CE)</h3>
+                    <div id="sensex-calls-container" class="cards-list">
+                        <!-- Cards injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Puts -->
+                <div class="options-column puts-column">
+                    <h3 class="column-title puts-title">Best Put Options (PE)</h3>
+                    <div id="sensex-puts-container" class="cards-list">
+                        <!-- Cards injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Chart Analyzer Modal -->
+    <div id="analyzer-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2><i data-lucide="scan"></i> AI Chart Pattern Analyzer</h2>
+                <button id="close-modal-btn" class="close-btn"><i data-lucide="x"></i></button>
+            </div>
+            
+            <div class="modal-body">
+                <p class="modal-subtitle">Upload or paste a Candlestick chart to analyze 60+ patterns using Deep Learning.</p>
+                
+                <div id="upload-zone" class="upload-zone">
+                    <i data-lucide="upload-cloud" class="upload-icon"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <span class="upload-hint">PNG, JPG up to 5MB</span>
+                    <input type="file" id="chart-upload-input" accept="image/*" class="hidden-input">
+                </div>
+                
+                <div id="preview-container" class="preview-container hidden">
+                    <img id="chart-preview" src="" alt="Chart Preview">
+                    <button id="analyze-action-btn" class="analyze-action-btn">Analyze Image <i data-lucide="sparkles"></i></button>
+                </div>
+                
+                <div id="analysis-loading" class="analysis-loading hidden">
+                    <div class="scanner-line"></div>
+                    <p>Scanning 60+ Candlestick Patterns...</p>
+                </div>
+                
+                <div id="analysis-result" class="analysis-result hidden">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
